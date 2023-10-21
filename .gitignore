@@ -1,0 +1,6 @@
+# ignore files:
+
+process.env
+node_modules/
+
+

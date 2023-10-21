@@ -1,0 +1,113 @@
+body {
+    margin: 0;
+    padding: 0;
+    //background-image: url('./image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
+}
+
+.dashboard-container {
+    max-width: 800px; /* Adjust the width as needed */
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px;
+    display: inline;
+    flex-wrap: wrap; /* Wrap employee items to the next row */
+    justify-content: space-between; /* Space between employee items */
+}
+
+.employee-list {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.employee-item {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: calc(50% - 10px); /* Adjust the width as needed (50% for two items in a row) */
+    box-sizing: border-box; /* Include padding and border in width calculation */
+    display: flex; /* Use flex layout for each employee item */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.employee-image {
+    flex: 0 0 100px;
+    margin-right: 10px;
+    
+    border-radius: 50%;    
+}
+
+.employee-info {
+    flex: 1;
+}
+
+.employee-name {
+    font-weight: bold;
+    margin: 0;
+}
+
+.employee-department,
+.employee-salary {
+    margin: 0;
+}
+
+.employee-buttons {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 10px;
+}
+
+.update-button,
+.delete-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.add-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.delete-confirmation-modal {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    width: 300px;
+    text-align: center;
+}
+
+.delete-confirmation-modal p {
+    margin: 0;
+}
+
+.modal-buttons button {
+    margin: 10px;
+    padding: 5px 15px;
+    background-color: #ff0000; /* Change this to your desired button color */
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-buttons button:hover {
+    background-color: #cc0000; /* Change this to your desired button hover color */
+}
