@@ -33,6 +33,8 @@ function UpdateEmployeePage() {
     };
 
     const handleUpdateEmployee = () => {
+    // use useForm hook here as you have done for login page
+
         const formData = new FormData();
         formData.append('first_name', employeeData.first_name);
         formData.append('last_name', employeeData.last_name);

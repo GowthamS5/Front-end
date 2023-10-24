@@ -26,6 +26,12 @@ function Login() {
 
           console.log('JWT Token:', responseData.token);
 
+          // you may set in local storage at once as an object 
+          //  obj = {role : responseData.role,
+          //            employeeId : responseData.employee_id,
+          //           token : responseData.token}
+          // localStorage.setItem('sessionData',response)
+
           if (responseData.role === 0 || responseData.role === 1) {
             window.location.href = '/dashboard';
           }
@@ -38,6 +44,13 @@ function Login() {
             timer: 1500,
           });
         } else {
+          // login failed same has to be done here 
+          // Swal.fire({
+          //   icon: 'fail',
+          //   title: 'Login Failed please try again with the correct credentials',
+          //   showConfirmButton: false,
+          //   timer: 1500,
+          // });
           console.error('Login failed:', responseData.message);
         }
       } else {
@@ -55,6 +68,7 @@ function Login() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label>Email:</label>
+            {/* you may do without using controller here */}
             <Controller
               name="email"
               control={control}

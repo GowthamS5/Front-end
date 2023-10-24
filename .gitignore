@@ -2,5 +2,7 @@
 
 process.env
 
+node_modules/
+
 
 

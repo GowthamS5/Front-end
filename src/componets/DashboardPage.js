@@ -10,6 +10,15 @@ function DashboardPage() {
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
+  // as you set the object in login component you can access the object and access the required field
+  // const sessionData = localStorage.getItem('sessionData');
+  // const userRole = sessionData.userRole;
+  // const accessToken = sessionData.accessToken;
+  // const employeeId = sessionData.employee_id
+
+  
+
+
   const userRole = parseInt(localStorage.getItem('userRole'), 10);
   const employeeId = localStorage.getItem('employee_id');
 
@@ -18,6 +27,8 @@ function DashboardPage() {
   const accessToken = localStorage.getItem('accessToken');
 
  useEffect(() => {
+
+  //derive the function outside the useEffect and make the function call only inside the useeffect
   if (!accessToken) {
     navigate('/');
     return;
@@ -68,7 +79,7 @@ function DashboardPage() {
         reverseButtons: true,
       }).then((result) => {
         if (result.isConfirmed) {
-          setEmployeeToDelete(employeeId);
+          setEmployeeToDelete(employeeId); // instead setting the state variable pass the employee id to the confirmDelete function  confirmDelete(employeeId)
           confirmDelete();
         }
       });
@@ -78,6 +89,7 @@ function DashboardPage() {
   };
 
   const confirmDelete = () => {
+    // dont delete the record instead update the isDeleted column in the table as 1 in not deleted it is 0
     if (employeeToDelete) {
       fetch(`http://localhost:3001/employees/${employeeToDelete}`, {
         method: 'DELETE',

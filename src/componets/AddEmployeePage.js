@@ -27,6 +27,7 @@ function AddEmployeePage() {
       });
       return;
     }
+    // use useForm hook here as you have done for login page
     const formData = new FormData();
     formData.append('first_name', data.first_name);
     formData.append('last_name', data.last_name);
