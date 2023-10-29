@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './DashboardPage.css';
+import './styles.css';
 import { format } from 'date-fns';
 import Swal from 'sweetalert2';
 import jwt_decode from 'jwt-decode';
