@@ -1,12 +1,12 @@
-  import React from 'react';
+import React from 'react';
 import './LoginPage.css';
 import './DashboardPage.css';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 
 function Login() {
-  const { control, handleSubmit, formState: { errors } } = useForm();
-  
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
   const onSubmit = async (data) => {
     try {
       const response = await fetch('http://localhost:3001/users/login', {
@@ -26,17 +26,18 @@ function Login() {
 
           console.log('JWT Token:', responseData.token);
 
-          // you may set in local storage at once as an object 
-          //  obj = {role : responseData.role,
-          //            employeeId : responseData.employee_id,
-          //           token : responseData.token}
-          // localStorage.setItem('sessionData',response)
+          const sessionData = {
+            role: responseData.role,
+            employeeId: responseData.employee_id,
+            token: responseData.token,
+          };
+
+          localStorage.setItem('sessionData', JSON.stringify(sessionData));
 
           if (responseData.role === 0 || responseData.role === 1) {
             window.location.href = '/dashboard';
           }
 
-      
           Swal.fire({
             icon: 'success',
             title: 'Login Successful',
@@ -44,19 +45,33 @@ function Login() {
             timer: 1500,
           });
         } else {
-          // login failed same has to be done here 
-          // Swal.fire({
-          //   icon: 'fail',
-          //   title: 'Login Failed please try again with the correct credentials',
-          //   showConfirmButton: false,
-          //   timer: 1500,
-          // });
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: 'Please enter the correct password or email.',
+            showConfirmButton: false,
+            timer: 1500,
+          });
           console.error('Login failed:', responseData.message);
         }
       } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Server Error',
+          text: `Server returned status code: ${response.status}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         console.error('Server error:', response.status);
       }
     } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while processing your request.',
+        showConfirmButton: false,
+        timer: 1500,
+      });
       console.error('Error:', error);
     }
   };
@@ -68,40 +83,25 @@ function Login() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label>Email:</label>
-            {/* you may do without using controller here */}
-            <Controller
-              name="email"
-              control={control}
-              rules={{
+            <input
+              type="email"
+              placeholder="Enter email"
+              {...register('email', {
                 required: 'Email is required',
                 pattern: {
                   value: /^\S+@\S+$/i,
                   message: 'Invalid email format',
                 },
-              }}
-              render={({ field }) => (
-                <input
-                  type="email"
-                  placeholder="Enter email"
-                  {...field}
-                />
-              )}
+              })}
             />
             {errors.email && <p className="error">{errors.email.message}</p>}
           </div>
           <div>
             <label>Password:</label>
-            <Controller
-              name="password"
-              control={control}
-              rules={{ required: 'Password is required' }}
-              render={({ field }) => (
-                <input
-                  type="password"
-                  placeholder="Enter password"
-                  {...field}
-                />
-              )}
+            <input
+              type="password"
+              placeholder="Enter password"
+              {...register('password', { required: 'Password is required' })}
             />
             {errors.password && <p className="error">{errors.password.message}</p>}
           </div>
