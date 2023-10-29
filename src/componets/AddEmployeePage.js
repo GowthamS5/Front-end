@@ -7,7 +7,7 @@ import './LoginPage.css';
 function AddEmployeePage() {
   const { control, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
-  const [existingDOBs, setExistingDOBs] = useState(new Set());
+  
 
   const onSubmit = async (data) => {
     if (!data.first_name || !data.last_name || !data.department || !data.salary || !data.DOB || !data.profile || !data.email || !data.password) {
@@ -17,17 +17,7 @@ function AddEmployeePage() {
 
     const formattedDOB = new Date(data.DOB).toISOString().split('T')[0];
 
-   
-    if (existingDOBs.has(formattedDOB)) {
   
-      Swal.fire({
-        icon: 'error',
-        title: 'Employee with the same Date of Birth already exists',
-        text: 'Please enter a different Date of Birth.',
-      });
-      return;
-    }
-    // use useForm hook here as you have done for login page
     const formData = new FormData();
     formData.append('first_name', data.first_name);
     formData.append('last_name', data.last_name);
@@ -51,7 +41,7 @@ function AddEmployeePage() {
         const responseData = await response.json();
         console.log('Employee added:', responseData);
         navigate('/dashboard');
-     existingDOBs.add(formattedDOB);
+
 
         Swal.fire({
           icon: 'success',
@@ -59,13 +49,23 @@ function AddEmployeePage() {
           showConfirmButton: false,
           timer: 1500,
         });
-      } else {
-        throw new Error('Failed to add employee');
+       } else {
+        const errorData = await response.json();
+        if (errorData.message === 'An employee with the same Date of Birth already exists.') {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Employee with the same Date of Birth already exists. Please enter a different Date of Birth.',
+          });
+        } else {
+          throw new Error(errorData.message);
+        }
       }
     } catch (error) {
       console.error('Error adding an employee:', error);
     }
-  };
+  }
+
 
   return (
     <div>
