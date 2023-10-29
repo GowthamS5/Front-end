@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import './UpdateEmployeePage.css';
+import './styles.css';
 
 function UpdateEmployeePage() {
     const { id } = useParams();
