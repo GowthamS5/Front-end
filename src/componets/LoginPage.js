@@ -17,60 +17,45 @@ function Login() {
         body: JSON.stringify(data),
       });
 
-      if (response.ok) {
-        const responseData = await response.json();
-        if (responseData.success) {
-          localStorage.setItem('userRole', responseData.role);
-          localStorage.setItem('employee_id', responseData.employee_id);
-          localStorage.setItem('jwtToken', responseData.token);
+      const responseData = await response.json();
 
-          console.log('JWT Token:', responseData.token);
+      if (response.status === 200 && responseData.success) {
+        localStorage.setItem('userRole', responseData.role);
+        localStorage.setItem('employee_id', responseData.employee_id);
+        localStorage.setItem('jwtToken', responseData.token);
 
-          const sessionData = {
-            role: responseData.role,
-            employeeId: responseData.employee_id,
-            token: responseData.token,
-          };
+        console.log('JWT Token:', responseData.token);
 
-          localStorage.setItem('sessionData', JSON.stringify(sessionData));
+        const sessionData = {
+          role: responseData.role,
+          employeeId: responseData.employee_id,
+          token: responseData.token,
+        };
 
-          if (responseData.role === 0 || responseData.role === 1) {
-            window.location.href = '/dashboard';
-          }
+        localStorage.setItem('sessionData', JSON.stringify(sessionData));
 
-          Swal.fire({
-            icon: 'success',
-            title: 'Login Successful',
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Login Failed',
-            text: 'Please enter the correct password or email.',
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          console.error('Login failed:', responseData.message);
+        if (responseData.role === 0 || responseData.role === 1) {
+          window.location.href = '/dashboard';
         }
-      } else {
+
         Swal.fire({
-          icon: 'error',
-          title: 'Server Error',
-          text: `Server returned status code: ${response.status}`,
+          icon: 'success',
+          title: 'Login Successful',
           showConfirmButton: false,
           timer: 1500,
         });
-        console.error('Server error:', response.status);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: 'Incorrect email or password. Please try again.',
+        });
       }
     } catch (error) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
         text: 'An error occurred while processing your request.',
-        showConfirmButton: false,
-        timer: 1500,
       });
       console.error('Error:', error);
     }
