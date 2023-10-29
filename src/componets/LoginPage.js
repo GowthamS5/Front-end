@@ -1,6 +1,5 @@
 import React from 'react';
-import './LoginPage.css';
-import './DashboardPage.css';
+import './styles.css';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 
