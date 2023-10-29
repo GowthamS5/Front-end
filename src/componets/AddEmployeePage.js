@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import './LoginPage.css';
-import './UpdateEmployeePage';
+import './styles.css';
 
 function AddEmployeePage() {
   const { control, handleSubmit, formState: { errors } } = useForm();
