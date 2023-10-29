@@ -3,38 +3,47 @@ import { useNavigate } from 'react-router-dom';
 import './DashboardPage.css';
 import { format } from 'date-fns';
 import Swal from 'sweetalert2';
+import jwt_decode from 'jwt-decode';
 
 function DashboardPage() {
   const navigate = useNavigate();
   const [employeeDetails, setEmployeeDetails] = useState([]);
   const [employeeToDelete, setEmployeeToDelete] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-
-  // as you set the object in login component you can access the object and access the required field
-  // const sessionData = localStorage.getItem('sessionData');
-  // const userRole = sessionData.userRole;
-  // const accessToken = sessionData.accessToken;
-  // const employeeId = sessionData.employee_id
-
-  
-
-
+ 
   const userRole = parseInt(localStorage.getItem('userRole'), 10);
   const employeeId = localStorage.getItem('employee_id');
-
+  
+const sessionData = JSON.parse(localStorage.getItem('sessionData'));
+ console.log('Session Data:', sessionData);
+  //consloe.log(sessionData);
   console.log('userRole:',userRole);
   console.log('id is :', employeeId);
   const accessToken = localStorage.getItem('accessToken');
 
- useEffect(() => {
+const checkToken = () =>{ 
+const accessToken = localStorage.getItem('jwtToken');
+if (!accessToken) {
 
-  //derive the function outside the useEffect and make the function call only inside the useeffect
-  if (!accessToken) {
-    navigate('/');
-    return;
+ navigate('/');
+      return;
+    }
+
+    const decodedToken = jwt_decode(accessToken);
+    const currentTime = Date.now() / 1000;
+
+    if (decodedToken.exp < currentTime) {
+      
+      navigate('/');
+      return;
+    }
+    
   }
 
+
   
+useEffect(() => {
+  checkToken();  
   const url = `http://localhost:3001/employees/details?userRole=${userRole}&employeeId=${employeeId}`;
 
   fetch(url, {
@@ -57,18 +66,20 @@ function DashboardPage() {
     .catch((error) => {
       console.error('Error getting employee details:', error);
     });
-}, [employeeId, userRole, accessToken]);
+},[employeeId, userRole, accessToken]);
 
   const clickUpdateEmployee = (employeeId) => {
+ 
     navigate(`/update-employee/${employeeId}`);
   };
 
   const clickAddEmployee = () => {
+ 
     navigate('/add-employee');
   };
 
   const clickDeleteEmployee = (employeeId) => {
-    if (userRole === 1) {
+   
       Swal.fire({
         title: 'Are you sure?',
         text: 'You are about to delete this employee!',
@@ -77,19 +88,15 @@ function DashboardPage() {
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'No, cancel',
         reverseButtons: true,
-      }).then((result) => {
+      })
+        .then((result) => {
         if (result.isConfirmed) {
-          setEmployeeToDelete(employeeId); // instead setting the state variable pass the employee id to the confirmDelete function  confirmDelete(employeeId)
+          setEmployeeToDelete(employeeId);
           confirmDelete();
-        }
-      });
-    } else {
-      Swal.fire('Access Denied', 'You do not have permission to delete employees.', 'warning');
-    }
+    }})
   };
 
   const confirmDelete = () => {
-    // dont delete the record instead update the isDeleted column in the table as 1 in not deleted it is 0
     if (employeeToDelete) {
       fetch(`http://localhost:3001/employees/${employeeToDelete}`, {
         method: 'DELETE',
@@ -122,9 +129,7 @@ function DashboardPage() {
  
       <h2>Employees List</h2>
      {userRole === 1 && (
-        <button className="add-button" onClick={clickAddEmployee}>
-          Add Employee
-        </button>
+       <button className="add-employee" onClick={clickAddEmployee}>add employees</button>
       )}
       <ul className="employee-list">
         {employeeDetails.map((employee) => {
