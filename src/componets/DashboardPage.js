@@ -16,13 +16,11 @@ function DashboardPage() {
   
 const sessionData = JSON.parse(localStorage.getItem('sessionData'));
  console.log('Session Data:', sessionData);
-  //consloe.log(sessionData);
-  console.log('userRole:',userRole);
-  console.log('id is :', employeeId);
-  const accessToken = localStorage.getItem('accessToken');
 
-const checkToken = () =>{ 
 const accessToken = localStorage.getItem('jwtToken');
+console.log(accessToken);
+const checkToken = () =>{ 
+
 if (!accessToken) {
 
  navigate('/');
@@ -36,12 +34,9 @@ if (!accessToken) {
       
       navigate('/');
       return;
-    }
-    
+    }   
   }
-
-
-  
+ 
 useEffect(() => {
   checkToken();  
   const url = `http://localhost:3001/employees/details?userRole=${userRole}&employeeId=${employeeId}`;
@@ -60,7 +55,7 @@ useEffect(() => {
     })
     .then((data) => {
   console.log('Response data:', data);
-  setEmployeeDetails(data);
+  setEmployeeDetails(data.data);
 })
 
     .catch((error) => {
@@ -111,7 +106,7 @@ useEffect(() => {
           return response.json();
         })
         .then((data) => {
-          console.log('Employee deleted:', data);
+          console.log('Employee deleted:', data.data);
           Swal.fire('Employee Deleted', 'Employee deleted successfully.', 'success');
           setShowDeleteConfirmation(false);
           window.location.reload();
