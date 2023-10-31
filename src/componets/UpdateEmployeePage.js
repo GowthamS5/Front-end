@@ -97,7 +97,7 @@ function UpdateEmployeePage() {
             }
             const data = await response.json();
 
-            setEmployeeData(data[0]);
+            setEmployeeData(data.data[0]);
         } catch (error) {
             console.error('Error fetching employee data:', error);
         }
