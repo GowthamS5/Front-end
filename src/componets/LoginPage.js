@@ -18,24 +18,26 @@ function Login() {
 
       const responseData = await response.json();
 
-      if (response.status === 200 && responseData.success) {
-        localStorage.setItem('userRole', responseData.role);
-        localStorage.setItem('employee_id', responseData.employee_id);
-        localStorage.setItem('jwtToken', responseData.token);
+      if (response.status === 200 && responseData.status) {
+  localStorage.setItem('userRole', responseData.data.role);
+  localStorage.setItem('employee_id', responseData.data.employee_id);
+  localStorage.setItem('jwtToken', responseData.data.token);
 
-        console.log('JWT Token:', responseData.token);
+  console.log('JWT Token:', responseData.data.token);
 
-        const sessionData = {
-          role: responseData.role,
-          employeeId: responseData.employee_id,
-          token: responseData.token,
-        };
+  const sessionData = {
+    role: responseData.data.role,
+    employeeId: responseData.data.employee_id,
+    token: responseData.data.token,
+  };
 
-        localStorage.setItem('sessionData', JSON.stringify(sessionData));
+  console.log('data:', sessionData);
 
-        if (responseData.role === 0 || responseData.role === 1) {
-          window.location.href = '/dashboard';
-        }
+  localStorage.setItem('sessionData', JSON.stringify(sessionData));
+
+  if (responseData.data.role === 0 || responseData.data.role === 1) {
+    window.location.href = '/dashboard';
+  }
 
         Swal.fire({
           icon: 'success',
