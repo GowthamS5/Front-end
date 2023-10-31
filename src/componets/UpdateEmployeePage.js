@@ -18,6 +18,7 @@ function UpdateEmployeePage() {
         last_name: '',
         email: '',
         password: '',
+        passwords:'',
         department: '',
         salary: '',
         role: 0,
@@ -128,6 +129,8 @@ function UpdateEmployeePage() {
                             onChange={handleInputChange}
                         />
                     </label>
+{userRole === 0 && (
+ <>
                     <label>
                         Email:
                         <input
@@ -144,7 +147,7 @@ function UpdateEmployeePage() {
                             type={showPassword ? "text" : "password"}
                             name="password"
                             placeholder="Password"
-                            value={employeeData.password}
+                            value={employeeData.passwords}
                             onChange={handleInputChange}
                         />
                         <span
@@ -154,6 +157,9 @@ function UpdateEmployeePage() {
                             {showPassword ? "Hide" : "Show"}
                         </span>
                     </label>
+          </>
+           )}
+
                     <label>
                         Profile Image:
                         <input
@@ -186,7 +192,7 @@ function UpdateEmployeePage() {
                                 />
                             </label>
                             <div className="checkbox-container">
-                                <label className="checkbox-label">Role:</label>
+                                <label className="checkbox-label">Make An Admin:</label>
                                 <input
                                     type="checkbox"
                                     name="role"
